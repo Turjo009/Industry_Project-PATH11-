@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Device and Path Creator</title>
+    <style>
+        /* Styles for buttons and input fields */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0074d9;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .input-field {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Device and Path Creator</h1>
+
+    <!-- Create Device Section -->
+    <h2>Create Device</h2>
+    <input type="text" class="input-field" id="deviceName" placeholder="Device Name">
+    <input type="number" class="input-field" id="deviceCost" placeholder="Cost">
+    <input type="text" class="input-field" id="connectFrom" placeholder="Connect From">
+    <input type="text" class="input-field" id="connectTo" placeholder="Connect To">
+    <button class="button" id="createDeviceButton">Create Device</button>
+
+    <!-- Create Path Section -->
+    <h2>Create Path</h2>
+    <input type="text" class="input-field" id="pathConnectFrom" placeholder="Connect From">
+    <input type="text" class="input-field" id="pathConnectTo" placeholder="Connect To">
+    <input type="number" class="input-field" id="pathCost" placeholder="Path Cost">
+    <button class="button" id="createPathButton">Create Path</button>
+
+    <!-- Run Search Section -->
+    <h2>Run Search</h2>
+    <input type="text" class "input-field" id="source" placeholder="Source">
+    <input type="text" class="input-field" id="destination" placeholder="Destination">
+    <button class="button" id="runSearchButton">Run Search</button>
+
+    <!-- Update Device Section -->
+    <h2>Update Device</h2>
+    <input type="text" class="input-field" id="updateDeviceName" placeholder="Device Name">
+    <button class="button" id="updateDeviceButton">Update Device</button>
+
+    <!-- Update Cost Section -->
+    <h2>Update Cost</h2>
+    <input type="text" class="input-field" id="updateDeviceNameForCost" placeholder="Device Name">
+    <input type="number" class="input-field" id="newDeviceCost" placeholder="New Cost">
+    <button class="button" id="updateCostButton">Update Cost</button>
+
+    <!-- List Device Section -->
+    <h2>List Device</h2>
+    <button class="button" id="listDeviceButton">List Device</button>
+
+    <!-- Remove Device Section -->
+    <h2>Remove Device</h2>
+    <input type="text" class="input-field" id="removeDeviceName" placeholder="Device Name">
+    <button class="button" id="removeDeviceButton">Remove Device</button>
+
+    <script>
+        // JavaScript for button click events
+
+        // Implement your logic for the "Create Device," "Create Path," and "Run Search" buttons here.
+
+        document.getElementById('updateDeviceButton').addEventListener('click', function() {
+            // Handle updating a device with the provided input value
+            const updateDeviceName = document.getElementById('updateDeviceName').value;
+            
+            // Implement your logic to update the device here
+        });
+
+        document.getElementById('updateCostButton').addEventListener('click', function() {
+            // Handle updating the cost of a device with the provided input values
+            const updateDeviceNameForCost = document.getElementById('updateDeviceNameForCost').value;
+            const newDeviceCost = document.getElementById('newDeviceCost').value;
+            
+            // Implement your logic to update the cost here
+        });
+
+        document.getElementById('listDeviceButton').addEventListener('click', function() {
+            // Handle listing devices
+            // Implement your logic to list devices here
+        });
+
+        document.getElementById('removeDeviceButton').addEventListener('click', function() {
+            // Handle removing a device with the provided input value
+            const removeDeviceName = document.getElementById('removeDeviceName').value;
+            
+            // Implement your logic to remove the device here
+        });
+    </script>
+</body>
+</html>

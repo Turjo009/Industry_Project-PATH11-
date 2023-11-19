@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_SWICTH_1", "label": "ELEVATOR_SWICTH_1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CLEAN101", "label": "CLEAN101", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DISTRIBUTOR1", "label": "DISTRIBUTOR1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR4", "label": "CONVEYOR4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR5", "label": "CONVEYOR5", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST1", "label": "DEST1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST6", "label": "DEST6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_SWICTH_2", "label": "ELEVATOR_SWICTH_2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CLEAN102", "label": "CLEAN102", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DISTRIBUTOR2", "label": "DISTRIBUTOR2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_SWICTH_3", "label": "ELEVATOR_SWICTH_3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CLEAN103", "label": "CLEAN103", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SCREEN2", "label": "SCREEN2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST_WEIGH", "label": "DEST_WEIGH", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "MAIN_WEIGHTER1", "label": "MAIN_WEIGHTER1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_SWICTH_4", "label": "ELEVATOR_SWICTH_4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CLEAN104", "label": "CLEAN104", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DIVERTER3", "label": "DIVERTER3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK3", "label": "LINK3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SCREEN1", "label": "SCREEN1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_6", "label": "SOURCE_6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PRESSURE106", "label": "PRESSURE106", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR6", "label": "CONVEYOR6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT6", "label": "WEIGHT6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_7", "label": "SOURCE_7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PRESSURE107", "label": "PRESSURE107", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR7", "label": "CONVEYOR7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT7", "label": "WEIGHT7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_8", "label": "SOURCE_8", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PRESSURE108", "label": "PRESSURE108", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DIVERTER8", "label": "DIVERTER8", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR14", "label": "CONVEYOR14", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "FLOW6", "label": "FLOW6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CALIBRATE111", "label": "CALIBRATE111", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PVC", "label": "PVC", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST11", "label": "DEST11", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "FLOW7", "label": "FLOW7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_11", "label": "SOURCE_11", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_1", "label": "SOURCE_1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR1", "label": "CONVEYOR1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK1", "label": "LINK1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR2", "label": "CONVEYOR2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT2", "label": "WEIGHT2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SEPARATOR2", "label": "SEPARATOR2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DRIVE2", "label": "DRIVE2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PROCESSOR2", "label": "PROCESSOR2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER1", "label": "SPLITTER1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK2", "label": "LINK2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR3", "label": "CONVEYOR3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT3", "label": "WEIGHT3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SEPARATOR3", "label": "SEPARATOR3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PROCESSOR3", "label": "PROCESSOR3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DRIVE3", "label": "DRIVE3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DIVERTER7", "label": "DIVERTER7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PRESS1", "label": "PRESS1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "TRIPPER2", "label": "TRIPPER2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "TRIPPER1", "label": "TRIPPER1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DUST6", "label": "DUST6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PROCESSOR6", "label": "PROCESSOR6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DIVERTER1", "label": "DIVERTER1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER4", "label": "SPLITTER4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER2", "label": "SPLITTER2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DUST7", "label": "DUST7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "PROCESSOR7", "label": "PROCESSOR7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DIVERTER2", "label": "DIVERTER2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER3", "label": "SPLITTER3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER5", "label": "SPLITTER5", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "MAIN_WEIGHTER2", "label": "MAIN_WEIGHTER2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR8", "label": "CONVEYOR8", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT8", "label": "WEIGHT8", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR9", "label": "CONVEYOR9", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SEPARATOR1", "label": "SEPARATOR1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DRIVE1", "label": "DRIVE1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR10", "label": "CONVEYOR10", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT10", "label": "WEIGHT10", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR11", "label": "CONVEYOR11", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK6", "label": "LINK6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST_CLEAN", "label": "DEST_CLEAN", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LOAD1", "label": "LOAD1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK8", "label": "LINK8", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CONVEYOR12", "label": "CONVEYOR12", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT12", "label": "WEIGHT12", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST_LOAD", "label": "DEST_LOAD", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "WEIGHT14", "label": "WEIGHT14", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK5", "label": "LINK5", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "CHUTE1", "label": "CHUTE1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST4", "label": "DEST4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST5", "label": "DEST5", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "red", "font": {"color": "black", "size": 15}, "id": "DEST14", "label": "DEST14", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_3", "label": "SOURCE_3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR2", "label": "ELEVATOR2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR1", "label": "ELEVATOR1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER1A", "label": "SPLITTER1A", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER1B", "label": "SPLITTER1B", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER2A", "label": "SPLITTER2A", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER2B", "label": "SPLITTER2B", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER3A", "label": "SPLITTER3A", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER3B", "label": "SPLITTER3B", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_PATH_2", "label": "ELEVATOR_PATH_2", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_PATH_1", "label": "ELEVATOR_PATH_1", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR4", "label": "ELEVATOR4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK4", "label": "LINK4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER4A", "label": "SPLITTER4A", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER4B", "label": "SPLITTER4B", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "SPLITTER5A", "label": "SPLITTER5A", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR3", "label": "ELEVATOR3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "LINK7", "label": "LINK7", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "FLOW5", "label": "FLOW5", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "DIVERTER6", "label": "DIVERTER6", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_PATH_3", "label": "ELEVATOR_PATH_3", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "#97c2fc", "font": {"color": "black", "size": 15}, "id": "ELEVATOR_PATH_4", "label": "ELEVATOR_PATH_4", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}, {"color": "green", "font": {"color": "black", "size": 15}, "id": "SOURCE_WEIGH", "label": "SOURCE_WEIGH", "shape": "dot", "shapeProperties": {"useBorderWithImage": true}, "size": 10, "value": 60}]);
+                  edges = new vis.DataSet([{"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_SWICTH_1", "to": "CLEAN101", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CLEAN101", "to": "DISTRIBUTOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR1", "to": "CONVEYOR4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR1", "to": "CONVEYOR5", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR1", "to": "DEST1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR1", "to": "DEST6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_SWICTH_2", "to": "CLEAN102", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CLEAN102", "to": "DISTRIBUTOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR2", "to": "CONVEYOR4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR2", "to": "CONVEYOR5", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR2", "to": "DEST1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DISTRIBUTOR2", "to": "DEST6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_SWICTH_3", "to": "CLEAN103", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CLEAN103", "to": "SCREEN2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SCREEN2", "to": "DEST_WEIGH", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SCREEN2", "to": "MAIN_WEIGHTER1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_SWICTH_4", "to": "CLEAN104", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CLEAN104", "to": "DIVERTER3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER3", "to": "LINK3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER3", "to": "SCREEN1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_6", "to": "PRESSURE106", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PRESSURE106", "to": "CONVEYOR6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR6", "to": "WEIGHT6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_7", "to": "PRESSURE107", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PRESSURE107", "to": "CONVEYOR7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR7", "to": "WEIGHT7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_8", "to": "PRESSURE108", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PRESSURE108", "to": "DIVERTER8", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER8", "to": "CONVEYOR6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER8", "to": "CONVEYOR14", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "FLOW6", "to": "CALIBRATE111", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CALIBRATE111", "to": "PVC", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PVC", "to": "DEST11", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PVC", "to": "FLOW7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_11", "to": "CALIBRATE111", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_1", "to": "CONVEYOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR1", "to": "LINK1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK1", "to": "CONVEYOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR2", "to": "WEIGHT2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT2", "to": "SEPARATOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SEPARATOR2", "to": "DRIVE2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DRIVE2", "to": "PROCESSOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PROCESSOR2", "to": "SPLITTER1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER1", "to": "LINK3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK2", "to": "CONVEYOR3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR3", "to": "WEIGHT3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT3", "to": "SEPARATOR3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SEPARATOR3", "to": "PROCESSOR3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SEPARATOR3", "to": "DRIVE3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PROCESSOR3", "to": "DIVERTER7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER7", "to": "LINK3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR4", "to": "PRESS1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PRESS1", "to": "TRIPPER2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PRESS1", "to": "TRIPPER1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR5", "to": "PRESS1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT6", "to": "DUST6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DUST6", "to": "PROCESSOR6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PROCESSOR6", "to": "DIVERTER1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER1", "to": "SPLITTER4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER1", "to": "SPLITTER2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT7", "to": "DUST7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DUST7", "to": "PROCESSOR7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "PROCESSOR7", "to": "DIVERTER2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER2", "to": "SPLITTER3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER2", "to": "SPLITTER5", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "MAIN_WEIGHTER2", "to": "CONVEYOR8", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "MAIN_WEIGHTER2", "to": "FLOW6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR8", "to": "WEIGHT8", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT8", "to": "CONVEYOR9", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR9", "to": "SEPARATOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SEPARATOR1", "to": "DRIVE1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DRIVE1", "to": "CONVEYOR10", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR10", "to": "WEIGHT10", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT10", "to": "CONVEYOR11", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR11", "to": "LINK6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK6", "to": "DEST_CLEAN", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK6", "to": "LOAD1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK8", "to": "CONVEYOR12", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR12", "to": "WEIGHT12", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT12", "to": "DEST_LOAD", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CONVEYOR14", "to": "WEIGHT14", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "WEIGHT14", "to": "LINK5", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK5", "to": "CHUTE1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "TRIPPER1", "to": "DEST4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "TRIPPER2", "to": "DEST5", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "CHUTE1", "to": "DEST14", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SCREEN1", "to": "DEST_WEIGH", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SCREEN1", "to": "MAIN_WEIGHTER1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_3", "to": "LINK2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "ELEVATOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "ELEVATOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "SPLITTER1A", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "SPLITTER1B", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "SPLITTER2A", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "SPLITTER2B", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "SPLITTER3A", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK3", "to": "SPLITTER3B", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR2", "to": "ELEVATOR_PATH_2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR1", "to": "ELEVATOR_PATH_1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER1A", "to": "ELEVATOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER1B", "to": "ELEVATOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER2", "to": "LINK3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER2A", "to": "ELEVATOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER2B", "to": "ELEVATOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER3", "to": "LINK3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER3A", "to": "ELEVATOR1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER3B", "to": "ELEVATOR2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER3B", "to": "ELEVATOR4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER4", "to": "LINK4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK4", "to": "SPLITTER4A", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK4", "to": "SPLITTER4B", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK4", "to": "SPLITTER5A", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK4", "to": "SPLITTER3B", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER4A", "to": "ELEVATOR3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER4B", "to": "ELEVATOR4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER5", "to": "LINK4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SPLITTER5A", "to": "ELEVATOR3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LOAD1", "to": "LINK7", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "LINK7", "to": "LINK8", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "FLOW5", "to": "DIVERTER6", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DIVERTER6", "to": "MAIN_WEIGHTER2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_PATH_1", "to": "ELEVATOR_SWICTH_1", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_PATH_2", "to": "ELEVATOR_SWICTH_2", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR3", "to": "ELEVATOR_PATH_3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_PATH_3", "to": "ELEVATOR_SWICTH_3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR4", "to": "ELEVATOR_PATH_4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "ELEVATOR_PATH_4", "to": "ELEVATOR_SWICTH_4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "FLOW7", "to": "ELEVATOR4", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "MAIN_WEIGHTER1", "to": "FLOW5", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "DRIVE3", "to": "PROCESSOR3", "width": 1}, {"arrowStrikethrough": true, "arrows": "to", "from": "SOURCE_WEIGH", "to": "MAIN_WEIGHTER1", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
