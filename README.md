@@ -49,3 +49,5 @@ Simply run the "runSearch.sql" with relevant parameters to get the desired outpu
 You can find some simple test querries in the filename: testCaseQueries.sql
 The commands for the provided dataset is in filename "givenDataSet.sql" so you can simply copy and paste and run the queries to insert the database inside the created "factory" database.
   
+### Step by Step Video tutorial:
+https://www.youtube.com/watch?v=W8MEEJmMUzo
