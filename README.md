@@ -21,6 +21,8 @@ For more detailed documentation please check /Documentation/FinalReport.pdf
 
 ## How to run?
 
+To see a step by step guide please check 
+
 Open SSMS
 
 1. Run the query inside filename "createDatabase.sql"
@@ -45,5 +47,5 @@ READY TO GO.
 Simply run the "runSearch.sql" with relevant parameters to get the desired output.
 
 You can find some simple test querries in the filename: testCaseQueries.sql
-The commands for the provided dataset is in filename "givenDataSet.sql" so you can simply copy and paste and run the queries to insert the database inside the created "factory" database
+The commands for the provided dataset is in filename "givenDataSet.sql" so you can simply copy and paste and run the queries to insert the database inside the created "factory" database.
   
